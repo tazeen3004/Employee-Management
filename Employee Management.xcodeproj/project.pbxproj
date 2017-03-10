@@ -13,6 +13,8 @@
 		2F58341C1E728E3000779E7D /* Employee_Management.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2F58341A1E728E3000779E7D /* Employee_Management.xcdatamodeld */; };
 		2F58341E1E728E3000779E7D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2F58341D1E728E3000779E7D /* Assets.xcassets */; };
 		2F5834211E728E3000779E7D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2F58341F1E728E3000779E7D /* LaunchScreen.storyboard */; };
+		2F5834291E7291F100779E7D /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F5834281E7291F100779E7D /* SecondViewController.swift */; };
+		2F58342B1E7296CA00779E7D /* marshmallow.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F58342A1E7296CA00779E7D /* marshmallow.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,8 @@
 		2F58341D1E728E3000779E7D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2F5834201E728E3000779E7D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2F5834221E728E3000779E7D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2F5834281E7291F100779E7D /* SecondViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
+		2F58342A1E7296CA00779E7D /* marshmallow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = marshmallow.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,8 +63,10 @@
 				2F5834131E728E3000779E7D /* AppDelegate.swift */,
 				2F5834151E728E3000779E7D /* ViewController.swift */,
 				2F5834171E728E3000779E7D /* Main.storyboard */,
+				2F5834281E7291F100779E7D /* SecondViewController.swift */,
 				2F58341D1E728E3000779E7D /* Assets.xcassets */,
 				2F58341F1E728E3000779E7D /* LaunchScreen.storyboard */,
+				2F58342A1E7296CA00779E7D /* marshmallow.png */,
 				2F5834221E728E3000779E7D /* Info.plist */,
 				2F58341A1E728E3000779E7D /* Employee_Management.xcdatamodeld */,
 			);
@@ -127,6 +133,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2F5834211E728E3000779E7D /* LaunchScreen.storyboard in Resources */,
+				2F58342B1E7296CA00779E7D /* marshmallow.png in Resources */,
 				2F58341E1E728E3000779E7D /* Assets.xcassets in Resources */,
 				2F5834191E728E3000779E7D /* Main.storyboard in Resources */,
 			);
@@ -139,6 +146,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2F5834291E7291F100779E7D /* SecondViewController.swift in Sources */,
 				2F58341C1E728E3000779E7D /* Employee_Management.xcdatamodeld in Sources */,
 				2F5834161E728E3000779E7D /* ViewController.swift in Sources */,
 				2F5834141E728E3000779E7D /* AppDelegate.swift in Sources */,
@@ -303,6 +311,7 @@
 				2F5834271E728E3000779E7D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

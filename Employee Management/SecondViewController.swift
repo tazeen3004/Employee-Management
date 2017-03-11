@@ -5,9 +5,11 @@
 //  Copyright © 2017 Tazeen. All rights reserved.
 
 import UIKit
-class SecondViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
+import CoreData
+
+class SecondViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     
-    var gender = ["Male","Female"]
+    var gender = ["Male","Female","Other"]
     var picker = UIPickerView()
     
     @IBOutlet weak var genderField: UITextField!
@@ -17,15 +19,34 @@ class SecondViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
     @IBOutlet weak var addField: UITextField!
     @IBOutlet weak var hobbField: UITextField!
     @IBOutlet weak var dobField: UITextField!
+     let image = UIImagePickerController()
+    // to change profile picture
+    @IBAction func changeImage(_ sender: UIButton)
+    {
+       
+        image.delegate = self
+        image.sourceType = UIImagePickerControllerSourceType.photoLibrary
+        image.allowsEditing = false
+        self.present(image, animated: true)
+    }
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        if let image = info[UIImagePickerControllerOriginalImage] as? UIImage
+        {
+            profileImage.image = image
+        }
+        self.dismiss(animated: true, completion: nil)
+    }
     
-   
+    
+    //submitting the details
     @IBAction func submit(_ sender: UIButton)
     {
         let date = Date()
         let formatter = DateFormatter()
         formatter.dateFormat = "dd.MM.yyyy"
-        let result = formatter.string(from: date)
-        print(result)
+        let todaydate = formatter.string(from: date)
+        
+        print(todaydate)
         let name = nameField.text!
         print(name)
         let designation = desgField.text!
@@ -36,11 +57,40 @@ class SecondViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
         let hobbies = hobbField.text!
         print(hobbies)
         let dob = dobField.text!
+        let pi = UIImagePNGRepresentation(profileImage.image!)
         
         if (name != "" && designation != "" && address != "" && gender != "" && hobbies != "" && dob != "")
         {
-        
-            self.performSegue(withIdentifier: "unwindToViewController", sender: self)
+            print("if")
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            let context = appDelegate.persistentContainer.viewContext
+            let newUser = NSEntityDescription.insertNewObject(forEntityName: "Employee", into: context)
+           
+            newUser.setValue(name, forKey: "name")
+            newUser.setValue(hobbies, forKey: "hobbies")
+            newUser.setValue(gender, forKey: "gender")
+            newUser.setValue(dob, forKey: "dob")
+            newUser.setValue(designation, forKey: "designaton")
+            newUser.setValue(todaydate, forKey: "dateofjoining")
+            newUser.setValue(address, forKey: "address")
+            newUser.setValue(pi, forKey: "pi")
+            do
+            {
+                    try context.save()
+            }
+            catch
+            {
+                let myAlert = UIAlertController(title: "Alert", message: "Couldn't save the details", preferredStyle: UIAlertControllerStyle.alert)
+                let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default)
+                myAlert.addAction(okAction)
+                self.present(myAlert, animated: true, completion: nil)
+            }
+           
+            
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let controller = storyboard.instantiateViewController(withIdentifier: "ViewController")
+            self.present(controller, animated: true, completion: nil)
+            //self.performSegue(withIdentifier: "unwindToViewController", sender: self)
         
         }
         else
@@ -80,7 +130,6 @@ class SecondViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
         picker.delegate = self
         picker.dataSource = self
         genderField.inputView = picker
-        
         
         //to add bottom border in text field
          let border1 = CALayer()

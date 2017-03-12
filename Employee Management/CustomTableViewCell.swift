@@ -11,6 +11,7 @@ import UIKit
 class CustomTableViewCell: UITableViewCell {
     @IBOutlet weak var profileImage: UIImageView!
 
+    @IBOutlet weak var idLabel: UILabel!
     @IBOutlet weak var dojLabel: UILabel!
     @IBOutlet weak var genderLabel: UILabel!
     @IBOutlet weak var dobLabel: UILabel!

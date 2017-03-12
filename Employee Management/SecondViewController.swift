@@ -10,7 +10,9 @@ import CoreData
 class SecondViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     
     var gender = ["Male","Female","Other"]
-    var picker = UIPickerView()
+    var pickerView = UIPickerView()
+    let image = UIImagePickerController()
+    let dobPicker = UIDatePicker()
     
     @IBOutlet weak var genderField: UITextField!
     @IBOutlet weak var profileImage: UIImageView!
@@ -19,91 +21,77 @@ class SecondViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
     @IBOutlet weak var addField: UITextField!
     @IBOutlet weak var hobbField: UITextField!
     @IBOutlet weak var dobField: UITextField!
-     let image = UIImagePickerController()
+    @IBOutlet weak var idField: UITextField!
+    
     // to change profile picture
-    @IBAction func changeImage(_ sender: UIButton)
-    {
-       
+    @IBAction func changeImage(_ sender: Any) {
         image.delegate = self
-        image.sourceType = UIImagePickerControllerSourceType.photoLibrary
-        image.allowsEditing = false
-        self.present(image, animated: true)
+        let method = UIAlertController(title: "Profile Picture", message: "Choose the method to change the image", preferredStyle: .actionSheet)
+        
+        let gallery = UIAlertAction(title: "Photo library", style: UIAlertActionStyle.default) {
+            UIAlertAction in
+            self.image.sourceType = .photoLibrary
+            self.present(self.image, animated: true)
+        }
+        let camera = UIAlertAction(title: "Camera", style: UIAlertActionStyle.default) {
+            UIAlertAction in
+            if UIImagePickerController.isSourceTypeAvailable(.camera)
+            {
+            self.image.sourceType = .camera
+            self.present(self.image, animated: true)
+           
+            }
+            else
+            {
+                print("camera not found")
+            }
+          
+        }
+        let cancel = UIAlertAction(title: "cancel", style: UIAlertActionStyle.cancel) {
+            UIAlertAction in
+            print ("Cancel Pressed")
+        }
+        
+        method.addAction(gallery)
+        method.addAction(camera)
+        method.addAction(cancel)
+        
+        present(method, animated: true, completion: nil)
+    
     }
+    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let image = info[UIImagePickerControllerOriginalImage] as? UIImage
         {
             profileImage.image = image
+        
+        self.dismiss(animated: true, completion: nil)
         }
+    }
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         self.dismiss(animated: true, completion: nil)
     }
-    
-    
-    //submitting the details
-    @IBAction func submit(_ sender: UIButton)
+    func birthDatePicker()
     {
-        let date = Date()
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd.MM.yyyy"
-        let todaydate = formatter.string(from: date)
+        dobPicker.datePickerMode = .date
         
-        print(todaydate)
-        let name = nameField.text!
-        print(name)
-        let designation = desgField.text!
-        print(designation)
-        let address = addField.text!
-        let gender = genderField.text!
-        print(gender)
-        let hobbies = hobbField.text!
-        print(hobbies)
-        let dob = dobField.text!
-        let pi = UIImagePNGRepresentation(profileImage.image!)
-        
-        if (name != "" && designation != "" && address != "" && gender != "" && hobbies != "" && dob != "")
-        {
-            print("if")
-            let appDelegate = UIApplication.shared.delegate as! AppDelegate
-            let context = appDelegate.persistentContainer.viewContext
-            let newUser = NSEntityDescription.insertNewObject(forEntityName: "Employee", into: context)
-           
-            newUser.setValue(name, forKey: "name")
-            newUser.setValue(hobbies, forKey: "hobbies")
-            newUser.setValue(gender, forKey: "gender")
-            newUser.setValue(dob, forKey: "dob")
-            newUser.setValue(designation, forKey: "designaton")
-            newUser.setValue(todaydate, forKey: "dateofjoining")
-            newUser.setValue(address, forKey: "address")
-            newUser.setValue(pi, forKey: "pi")
-            do
-            {
-                    try context.save()
-            }
-            catch
-            {
-                let myAlert = UIAlertController(title: "Alert", message: "Couldn't save the details", preferredStyle: UIAlertControllerStyle.alert)
-                let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default)
-                myAlert.addAction(okAction)
-                self.present(myAlert, animated: true, completion: nil)
-            }
-           
-            
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let controller = storyboard.instantiateViewController(withIdentifier: "ViewController")
-            self.present(controller, animated: true, completion: nil)
-            //self.performSegue(withIdentifier: "unwindToViewController", sender: self)
-        
-        }
-        else
-        {
-                let myAlert = UIAlertController(title: "Alert", message: "Enter values in all fields", preferredStyle: UIAlertControllerStyle.alert)
-                let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default)
-                myAlert.addAction(okAction)
-                self.present(myAlert, animated: true, completion: nil)
-        }
-    
-    
+        let done = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(donePressed))
+        let toolbar = UIToolbar()
+        toolbar.sizeToFit()
+        toolbar.setItems([done], animated: false)
+        dobField.inputAccessoryView = toolbar
+        dobField.inputView = dobPicker
     }
-    
+    func donePressed()
+    {
+        let format = DateFormatter()
+        format.dateStyle = .medium
+        format.timeStyle = .none
+        dobField.text = format.string(from: dobPicker.date)
+        self.view.endEditing(true)
+        
+    }
+    //picker view for gender
     func numberOfComponents(in pickerView: UIPickerView) -> Int
     {
         return 1
@@ -122,14 +110,83 @@ class SecondViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
         return gender[row]
     }
     
+    //submitting the details
+    @IBAction func submit(_ sender: UIButton)
+    {
+        let date = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd.MM.yyyy"
+        let todaydate = formatter.string(from: date)
+        print(todaydate)
+        let name = nameField.text!
+        print(name)
+        let designation = desgField.text!
+        print(designation)
+        let address = addField.text!
+        let gender = genderField.text!
+        print(gender)
+        let hobbies = hobbField.text!
+        print(hobbies)
+        let dob = dobField.text!
+        let pi = UIImagePNGRepresentation(profileImage.image!)
+        let id = Int(idField.text!)
+        
+        if (name != "" && designation != "" && address != "" && gender != "" && hobbies != "" && dob != "")
+        {
+            print("if")
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            let context = appDelegate.persistentContainer.viewContext
+            let newUser = NSEntityDescription.insertNewObject(forEntityName: "Employee", into: context)
+           
+            newUser.setValue(name, forKey: "name")
+            newUser.setValue(hobbies, forKey: "hobbies")
+            newUser.setValue(gender, forKey: "gender")
+            newUser.setValue(dob, forKey: "dob")
+            newUser.setValue(designation, forKey: "designaton")
+            newUser.setValue(todaydate, forKey: "dateofjoining")
+            newUser.setValue(address, forKey: "address")
+            newUser.setValue(pi, forKey: "pi")
+            newUser.setValue(id, forKey: "id")
+            do
+            {
+                    try context.save()
+            }
+            catch
+            {
+                let myAlert = UIAlertController(title: "Alert", message: "Couldn't save the details", preferredStyle: UIAlertControllerStyle.alert)
+                let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default)
+                myAlert.addAction(okAction)
+                self.present(myAlert, animated: true, completion: nil)
+            }
+            // going back to main screen
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let controller = storyboard.instantiateViewController(withIdentifier: "ViewController")
+            self.present(controller, animated: true, completion: nil)
+            //self.performSegue(withIdentifier: "unwindToViewController", sender: self)
+        
+        }
+        else
+        {
+                let myAlert = UIAlertController(title: "Alert", message: "Enter values in all fields", preferredStyle: UIAlertControllerStyle.alert)
+                let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default)
+                myAlert.addAction(okAction)
+                self.present(myAlert, animated: true, completion: nil)
+        }
+    
+        
+    }
+    
+   
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        birthDatePicker()
         // to make the uiimageview circular
         self.profileImage.layer.cornerRadius = self.profileImage.frame.size.width / 2
         self.profileImage.clipsToBounds = true
-        picker.delegate = self
-        picker.dataSource = self
-        genderField.inputView = picker
+        pickerView.delegate = self
+        pickerView.dataSource = self
+        genderField.inputView = pickerView
         
         //to add bottom border in text field
          let border1 = CALayer()
@@ -174,6 +231,13 @@ class SecondViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
          border6.borderWidth = width6
          genderField.layer.addSublayer(border6)
          genderField.layer.masksToBounds = true
+        let border7 = CALayer()
+        let width7 = CGFloat(2.0)
+        border7.borderColor = UIColor.lightGray.cgColor
+        border7.frame = CGRect(x: 0, y: self.idField.frame.size.height - width7, width:  genderField.frame.size.width, height: genderField.frame.size.height)
+        border7.borderWidth = width7
+        idField.layer.addSublayer(border7)
+        idField.layer.masksToBounds = true
     
     }
     
@@ -182,17 +246,6 @@ class SecondViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
         // Dispose of any resources that can be recreated.
     }
     
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
-    
-}
+    }
 
    

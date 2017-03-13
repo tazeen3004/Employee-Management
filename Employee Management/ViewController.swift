@@ -18,7 +18,7 @@ var gender: [String] = []
 var hobbies: [String] = []
 var doj: [String] = []
 var id: [Int] = []
-
+var emp: [String : [String]] = [:]
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource  {
     
@@ -30,6 +30,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func details()
     {
+        
     var i = 0
     let date = Date()
     let formatter = DateFormatter()
@@ -98,22 +99,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             
         }
     }
-    var valueToPass :String! = ""
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        /*let indexPath = tableView.indexPathForSelectedRow;
-        let currentCell = tableView.cellForRow(at: indexPath!) as! CustomTableViewCell!;
-        print("dfg")
-        valueToPass = currentCell?.idLabel.text
-        print(valueToPass)
-        //let indexPath = tableView.indexPathForSelectedRow();
-        //let currentCell = tableView.cellForRowAtIndexPath(indexPath!) as UITableViewCell!;
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let controller = storyboard.instantiateViewController(withIdentifier: "ThirdViewController") as! ThirdViewController
-        //self.presentViewController(viewContoller, animated: true , completion: nil)
-        
-        //let controller = (withIdentifier: "ThirdViewController")
-        ViewController.passedValue = currentCell!.idLabel.text
-        self.present(controller, animated: true, completion: nil)*/
         let indexPath = tableView.indexPathForSelectedRow;
         let currentCell = tableView.cellForRow(at: indexPath!) as! CustomTableViewCell!;
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -158,16 +145,17 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                        {
                          id.append(eid)
                         
-                       }
+                    }
                     
                     if let edesg = result.value(forKey: "designaton") as? String
                     {
                         designation.append(edesg)
-                        
                     }
+                    
                     if let egend = result.value(forKey: "gender") as? String
                     {
                         gender.append(egend)
+                      
                         
                     }
                     if let edob = result.value(forKey: "dob") as? String
@@ -184,6 +172,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                     {
                         image.append(UIImage(data: photoinData as Data)!)
                     }
+                    
                 }
                 
             }
@@ -192,7 +181,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         {
             
         }
-     
+      
         details()
         
         

@@ -17,6 +17,7 @@
 		2F58342B1E7296CA00779E7D /* marshmallow.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F58342A1E7296CA00779E7D /* marshmallow.png */; };
 		2F5834411E74029800779E7D /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F5834401E74029800779E7D /* CustomTableViewCell.swift */; };
 		2F7F8BB61E74290200E80CE7 /* ThirdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F7F8BB51E74290200E80CE7 /* ThirdViewController.swift */; };
+		2F7F8BB81E762D2A00E80CE7 /* FourthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F7F8BB71E762D2A00E80CE7 /* FourthViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		2F58342A1E7296CA00779E7D /* marshmallow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = marshmallow.png; sourceTree = "<group>"; };
 		2F5834401E74029800779E7D /* CustomTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
 		2F7F8BB51E74290200E80CE7 /* ThirdViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ThirdViewController.swift; path = ../ThirdViewController.swift; sourceTree = "<group>"; };
+		2F7F8BB71E762D2A00E80CE7 /* FourthViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FourthViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +70,7 @@
 				2F5834401E74029800779E7D /* CustomTableViewCell.swift */,
 				2F58341D1E728E3000779E7D /* Assets.xcassets */,
 				2F5834171E728E3000779E7D /* Main.storyboard */,
+				2F7F8BB71E762D2A00E80CE7 /* FourthViewController.swift */,
 				2F5834151E728E3000779E7D /* ViewController.swift */,
 				2F5834281E7291F100779E7D /* SecondViewController.swift */,
 				2F7F8BB51E74290200E80CE7 /* ThirdViewController.swift */,
@@ -155,6 +158,7 @@
 				2F5834291E7291F100779E7D /* SecondViewController.swift in Sources */,
 				2F5834411E74029800779E7D /* CustomTableViewCell.swift in Sources */,
 				2F58341C1E728E3000779E7D /* Employee_Management.xcdatamodeld in Sources */,
+				2F7F8BB81E762D2A00E80CE7 /* FourthViewController.swift in Sources */,
 				2F5834161E728E3000779E7D /* ViewController.swift in Sources */,
 				2F7F8BB61E74290200E80CE7 /* ThirdViewController.swift in Sources */,
 				2F5834141E728E3000779E7D /* AppDelegate.swift in Sources */,

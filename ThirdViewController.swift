@@ -23,6 +23,19 @@ class ThirdViewController: UIViewController {
     @IBOutlet weak var gendLabel: UILabel!
     
     @IBOutlet weak var profileImage: UIImageView!
+    
+    @IBAction func edit(_ sender: Any)
+    {
+    
+    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+    let viewController = storyboard.instantiateViewController(withIdentifier: "FourthViewController") as! FourthViewController
+    let value = id
+    viewController.passedValue =  value
+    print("df")
+    self.present(viewController, animated: true , completion: nil)
+    
+    }
+    
     func displayDetail()
     {
         idLabel.text = String(id)
@@ -90,6 +103,8 @@ class ThirdViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.profileImage.layer.cornerRadius = self.profileImage.frame.size.width / 2
+        self.profileImage.clipsToBounds = true
         id = passedValue
         displayDetail()
         

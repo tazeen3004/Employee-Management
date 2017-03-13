@@ -91,24 +91,44 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             {
                 //error
             }
+           
             id.remove(at: indexPath.row)
            
-            tableView.reloadData()
+            self.tableView.reloadData()
             
         }
     }
-    
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath)
-    {
+    var valueToPass :String! = ""
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        /*let indexPath = tableView.indexPathForSelectedRow;
+        let currentCell = tableView.cellForRow(at: indexPath!) as! CustomTableViewCell!;
+        print("dfg")
+        valueToPass = currentCell?.idLabel.text
+        print(valueToPass)
+        //let indexPath = tableView.indexPathForSelectedRow();
+        //let currentCell = tableView.cellForRowAtIndexPath(indexPath!) as UITableViewCell!;
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "ThirdViewController") as! ThirdViewController
+        //self.presentViewController(viewContoller, animated: true , completion: nil)
         
+        //let controller = (withIdentifier: "ThirdViewController")
+        ViewController.passedValue = currentCell!.idLabel.text
+        self.present(controller, animated: true, completion: nil)*/
+        let indexPath = tableView.indexPathForSelectedRow;
+        let currentCell = tableView.cellForRow(at: indexPath!) as! CustomTableViewCell!;
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let viewController = storyboard.instantiateViewController(withIdentifier: "ThirdViewController") as! ThirdViewController
+        let value = Int((currentCell?.idLabel.text)!)
+        viewController.passedValue =  value
+            print("df")
+        self.present(viewController, animated: true , completion: nil)
     }
-    
-    
-    
-    @IBAction func prepareForUnwind(segue: UIStoryboardSegue)
-    {
+  
+  
+  //  @IBAction func prepareForUnwind(segue: UIStoryboardSegue)
+    //{
         
-    }
+    //}
        override func viewDidLoad() {
         super.viewDidLoad()
         let appdelegate = UIApplication.shared.delegate as! AppDelegate

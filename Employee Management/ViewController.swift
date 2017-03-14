@@ -10,15 +10,14 @@ import UIKit
 import CoreData
 
 
-var name: [String] = []
-var image: [UIImage] = []
-var designation: [String] = []
-var dob: [String] = []
-var gender: [String] = []
-var hobbies: [String] = []
+var name: [Int : String] = [:]
+var image: [Int : UIImage] = [:]
+var designation: [Int : String] = [:]
+var dob: [Int : String] = [:]
+var gender: [Int : String] = [:]
+var hobbies: [Int : String] = [:]
 var doj: [String] = []
 var id: [Int] = []
-var emp: [String : [String]] = [:]
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource  {
     
@@ -30,6 +29,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func details()
     {
+        
         
     var i = 0
     let date = Date()
@@ -56,12 +56,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CustomTableViewCell
-       
-        cell.nameLabel.text = name[indexPath.row]
-        print (name[indexPath.row])
-        cell.profileImage.image = image[indexPath.row]
-        cell.genderLabel.text = gender[indexPath.row]
-        cell.dobLabel.text = dob[indexPath.row]
+        
+        
+        cell.nameLabel.text = Array(name.values)[indexPath.row]
+        cell.profileImage.image = Array(image.values)[indexPath.row]
+        cell.genderLabel.text = Array(gender.values)[indexPath.row]
+        cell.dobLabel.text = Array(dob.values)[indexPath.row]
         cell.dojLabel.text = doj[indexPath.row]
         cell.idLabel.text = String(id[indexPath.row])
         return (cell)
@@ -136,43 +136,38 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             {
                 for result in results as! [NSManagedObject]
                 {
-                    
-                    if let ename = result.value(forKey: "name") as? String
+                    if let eid = result.value(forKey: "id") as? Int
                     {
-                        name.append(ename)
-                    }
-                        if let eid = result.value(forKey: "id") as? Int
-                       {
                          id.append(eid)
-                        
+                        print (eid)
+                       
+                        if let ename = result.value(forKey: "name") as? String
+                        {
+                            name.updateValue(ename, forKey: eid)
+                            print (ename)
+                            if let edesg = result.value(forKey: "designaton") as? String
+                            {
+                               designation.updateValue(edesg, forKey: eid)
+                                if let egend = result.value(forKey: "gender") as? String
+                                {
+                                    gender.updateValue(egend, forKey: eid)
+                                    if let edob = result.value(forKey: "dob") as? String
+                                    {
+                                        dob.updateValue(edob, forKey: eid)
+                                        if let edoj = result.value(forKey: "dateofjoining") as? String
+                                        {
+                                            doj.append(edoj)
+                                            if let photoinData = result.value(forKey: "pi") as? NSData
+                                            {
+                                                image.updateValue((UIImage(data: photoinData as Data)!), forKey: eid)
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
-                    
-                    if let edesg = result.value(forKey: "designaton") as? String
-                    {
-                        designation.append(edesg)
-                    }
-                    
-                    if let egend = result.value(forKey: "gender") as? String
-                    {
-                        gender.append(egend)
-                      
-                        
-                    }
-                    if let edob = result.value(forKey: "dob") as? String
-                    {
-                        dob.append(edob)
-                        
-                    }
-                    if let edoj = result.value(forKey: "dateofjoining") as? String
-                    {
-                        doj.append(edoj)
-                        
-                    }
-                    if let photoinData = result.value(forKey: "pi") as? NSData
-                    {
-                        image.append(UIImage(data: photoinData as Data)!)
-                    }
-                    
+         
                 }
                 
             }

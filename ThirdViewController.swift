@@ -31,7 +31,6 @@ class ThirdViewController: UIViewController {
     let viewController = storyboard.instantiateViewController(withIdentifier: "FourthViewController") as! FourthViewController
     let value = id
     viewController.passedValue =  value
-    print("df")
     self.present(viewController, animated: true , completion: nil)
     
     }

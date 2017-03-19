@@ -4,7 +4,7 @@
 //
 //  Created by Tazeen on 11/03/17.
 //  Copyright © 2017 Tazeen. All rights reserved.
-//
+//  shows the stored details of employee
 
 import UIKit
 import CoreData

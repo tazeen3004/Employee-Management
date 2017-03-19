@@ -6,10 +6,10 @@
 //  Copyright © 2017 Tazeen. All rights reserved.
 //
 // This is the main screen of the app
+
 import UIKit
 import CoreData
 import Foundation
-
 
 var name: [String] = []
 var image: [UIImage] = []
@@ -19,9 +19,13 @@ var gender: [String] = []
 var hobbies: [Int : String] = [:]
 var doj: [String] = []
 var id: [Int] = []
+//main dictionary containing details of all employee's
 var emp: [Int: [String]] = [:]
+//contains sorted employees
 var sortedEmp: [Int: [String]] = [:]
+//to check if sorting is on or not
 var sortSelected = 0
+//filtered employees
 var filterid:[Int] = []
 var filterEmp: [Int : [String]] = emp
 
@@ -34,6 +38,14 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     var objectArray = [String]()
     var searchController = UISearchController()
     var arrayfilter = [String]()
+    //to exit search
+    @IBAction func exit(_ sender: Any)
+    {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let viewController = storyboard.instantiateViewController(withIdentifier: "ViewController") as! ViewController
+        self.present(viewController, animated: true , completion: nil)
+    }
+    // to display monitor values
     func details()
     {
     var i = 0
@@ -51,16 +63,19 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     totalLabel.text = String(id.count)
     todayLabel.text = String(i)
     }
+    //gives out filtered array
+    //user can search on the basis of all employee's details
+    //for each employee it takes in the vlue array from emp disctionary and checks if it contains the user input
     func filterResult(searchText: String)
     {
        filterEmp.removeAll()
+        filterid.removeAll()
         for (k,v) in emp
         {
             arrayfilter = v
-            
             let searchPredicate = NSPredicate(format: "SELF CONTAINS[c] %@", searchText)
             let array = (self.arrayfilter as NSArray).filtered(using: searchPredicate)
-            var values = array as! [String]
+            let values = array as! [String]
             if values .isEmpty
             {
                 print("no match")
@@ -69,13 +84,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             {
                     filterid.append(k)
             }
-            
         }
-        var mySet = Set<Int>(filterid)
+        let mySet = Set<Int>(filterid)
         filterid = Array(mySet)
-        
-        print("dfdf")
-        print(filterEmp)
         id.removeAll()
         image.removeAll()
         for i in filterid
@@ -93,30 +104,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         tableView.reloadData()
     }
-    func filterSearchBy()
-    {
-        var mySet = Set<Int>(filterid)
-        filterid = Array(mySet)
-        filterEmp.removeAll()
-        print(filterEmp)
-        id.removeAll()
-        image.removeAll()
-        for i in filterid
-        {
-            for (k,v) in emp
-            {
-                if i == k
-                {
-                    let arr = v
-                    filterEmp[k] = [arr[0],arr[1],arr[2],arr[3],arr[4]]
-                    id.append(k)
-                    getProfile()
-                }
-            }
-        }
-        print(filterEmp)
-        tableView.reloadData()
-    }
+
+    //on click it displays a list in actionsheet where user can choose the method by which he wants to sort the employees
     @IBAction func sort(_ sender: Any) {
     
    
@@ -149,6 +138,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     present(method, animated: true, completion: nil)
     }
+    //functions for the method choosen by the user to sort
+    //another dictionary is used to keep the sorted values
     func sortByName()
     {
         sortSelected = 1
@@ -169,6 +160,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         
     }
+    
     func calcAge(birthday:String) -> Int {
         let dateFormater = DateFormatter()
         dateFormater.dateFormat = "MMM dd,YYYY"
@@ -221,6 +213,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         tableView.reloadData()
    
     }
+    //profile picture is fetched when sorting is used as sorted dictionary contains only string values
     func getProfile()
     {
         image.removeAll()
@@ -265,14 +258,14 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     {
         
         return id.count
-            }
-   
+    }
+   //for displays cells conditions are checked first whether the user is sorting , searching etc and accordingly cells are displayed
+    
         func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CustomTableViewCell
         if searchController.isEditing
         {
-            filterSearchBy()
             let object = Array(filterEmp.values)[indexPath.row]
             cell.nameLabel.text = object[0]
             cell.profileImage.image = image[indexPath.row]
@@ -326,7 +319,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             print(object)
         
         cell.nameLabel.text = object[0]
-        
         cell.profileImage.image = image[indexPath.row]
         cell.genderLabel.text = object[3]
         cell.dobLabel.text = object[2]
@@ -338,7 +330,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
       
         else { preconditionFailure ("unexpected cell type")}
     }
-    
+    //to delete an employee
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath)
     {
@@ -372,7 +364,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             details()
         }
     }
-    
+    //to move to another view controller to view all details
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let indexPath = tableView.indexPathForSelectedRow;
         let currentCell = tableView.cellForRow(at: indexPath!) as! CustomTableViewCell!;
@@ -383,11 +375,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         self.present(viewController, animated: true , completion: nil)
     }
   
-  
-  //  @IBAction func prepareForUnwind(segue: UIStoryboardSegue)
-    //{
-        
-    //}
        override func viewDidLoad() {
         super.viewDidLoad()
         let appdelegate = UIApplication.shared.delegate as! AppDelegate

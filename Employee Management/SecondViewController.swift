@@ -3,6 +3,7 @@
 //
 //  Created by Tazeen on 10/03/17.
 //  Copyright © 2017 Tazeen. All rights reserved.
+// to add a new employee
 
 import UIKit
 import CoreData
@@ -72,6 +73,7 @@ class SecondViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         self.dismiss(animated: true, completion: nil)
     }
+    //dobpicker
     func birthDatePicker()
     {
         dobPicker.datePickerMode = .date
@@ -90,20 +92,16 @@ class SecondViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
         format.timeStyle = .none
         dobField.text = format.string(from: dobPicker.date)
         self.view.endEditing(true)
-        
-        
     }
-    
+    //gender
     func genderPicker()
     {
-        
-        
         let done = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(donePressedPicker))
         let toolbar = UIToolbar()
         toolbar.sizeToFit()
         toolbar.setItems([done], animated: false)
         genderField.inputAccessoryView = toolbar
-        genderField.inputView = dobPicker
+        genderField.inputView = pickerView
     }
     func donePressedPicker()
     {

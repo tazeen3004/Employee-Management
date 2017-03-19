@@ -27,7 +27,7 @@ class FourthViewController: UIViewController, UIPickerViewDelegate, UIPickerView
     @IBOutlet weak var hobbField: UITextField!
     @IBOutlet weak var gendField: UITextField!
     @IBOutlet weak var addField: UITextField!
-    
+    //change profile picture
     @IBAction func change(_ sender: Any)
     {
         image.delegate = self
@@ -99,24 +99,18 @@ class FourthViewController: UIViewController, UIPickerViewDelegate, UIPickerView
     //picker view for gender
     func genderPicker()
     {
-        
-        
         let done = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(donePressedPicker))
         let toolbar = UIToolbar()
-        
-        
         toolbar.sizeToFit()
         toolbar.setItems([done], animated: false)
         gendField.inputAccessoryView = toolbar
-        gendField.inputView = dobPicker
+        gendField.inputView = pickerView
     }
     func donePressedPicker()
     {
         let pick = doneValue
         gendField.text = pick
         self.view.endEditing(true)
-        
-        
     }
     func numberOfComponents(in pickerView: UIPickerView) -> Int
     {
@@ -140,14 +134,10 @@ class FourthViewController: UIViewController, UIPickerViewDelegate, UIPickerView
     @IBAction func update(_ sender: Any)
     {
         let name = nameField.text!
-        print(name)
         let designation = desgField.text!
-        print(designation)
         let address = addField.text!
         let gender = gendField.text!
-        print(gender)
         let hobbies = hobbField.text!
-        print(hobbies)
         let dob = dobField.text!
         let pi = UIImagePNGRepresentation(profileImage.image!)
       
@@ -241,10 +231,10 @@ class FourthViewController: UIViewController, UIPickerViewDelegate, UIPickerView
     override func viewDidLoad() {
         super.viewDidLoad()
         id = passedValue
-        print(id)
         idLabel.text = String(id)
         savedImage()
         birthDatePicker()
+        genderPicker()
         
         
         // to make the uiimageview circular

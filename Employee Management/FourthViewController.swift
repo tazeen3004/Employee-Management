@@ -203,7 +203,7 @@ class FourthViewController: UIViewController, UIPickerViewDelegate, UIPickerView
                         let  image = UIImage(data: photoinData as Data)
                         profileImage.image = image
                     }
-                    
+                
                 }
                 
             }

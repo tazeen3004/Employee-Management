@@ -13,6 +13,7 @@ class SecondViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
     var pickerView = UIPickerView()
     let image = UIImagePickerController()
     let dobPicker = UIDatePicker()
+    var doneValue = String()
     
     @IBOutlet weak var genderField: UITextField!
     @IBOutlet weak var profileImage: UIImageView!
@@ -90,6 +91,27 @@ class SecondViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
         dobField.text = format.string(from: dobPicker.date)
         self.view.endEditing(true)
         
+        
+    }
+    
+    func genderPicker()
+    {
+        
+        
+        let done = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(donePressedPicker))
+        let toolbar = UIToolbar()
+        toolbar.sizeToFit()
+        toolbar.setItems([done], animated: false)
+        genderField.inputAccessoryView = toolbar
+        genderField.inputView = dobPicker
+    }
+    func donePressedPicker()
+    {
+        let pick = doneValue
+        genderField.text = pick
+        self.view.endEditing(true)
+        
+        
     }
     //picker view for gender
     func numberOfComponents(in pickerView: UIPickerView) -> Int
@@ -103,7 +125,9 @@ class SecondViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
     }
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int)
     {
-        genderField.text=gender[row]
+            doneValue = gender[row]
+            genderField.text=gender[row]
+        
     }
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String?
     {
@@ -115,18 +139,13 @@ class SecondViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
     {
         let date = Date()
         let formatter = DateFormatter()
-        formatter.dateFormat = "dd.MM.yyyy"
+        formatter.dateFormat = "MMM dd"
         let todaydate = formatter.string(from: date)
-        print(todaydate)
         let name = nameField.text!
-        print(name)
         let designation = desgField.text!
-        print(designation)
         let address = addField.text!
         let gender = genderField.text!
-        print(gender)
         let hobbies = hobbField.text!
-        print(hobbies)
         let dob = dobField.text!
         let pi = UIImagePNGRepresentation(profileImage.image!)
         let id = Int(idField.text!)
@@ -162,7 +181,7 @@ class SecondViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let controller = storyboard.instantiateViewController(withIdentifier: "ViewController")
             self.present(controller, animated: true, completion: nil)
-            //self.performSegue(withIdentifier: "unwindToViewController", sender: self)
+            
         
         }
         else
@@ -181,6 +200,7 @@ class SecondViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
     override func viewDidLoad() {
         super.viewDidLoad()
         birthDatePicker()
+        genderPicker()
         // to make the uiimageview circular
         self.profileImage.layer.cornerRadius = self.profileImage.frame.size.width / 2
         self.profileImage.clipsToBounds = true

@@ -5,9 +5,10 @@
 //  Created by Tazeen on 10/03/17.
 //  Copyright © 2017 Tazeen. All rights reserved.
 //
-
+// This is the main screen of the app
 import UIKit
 import CoreData
+import Foundation
 
 
 var name: [String] = []
@@ -21,15 +22,18 @@ var id: [Int] = []
 var emp: [Int: [String]] = [:]
 var sortedEmp: [Int: [String]] = [:]
 var sortSelected = 0
+var filterid:[Int] = []
+var filterEmp: [Int : [String]] = emp
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource  {
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UISearchDisplayDelegate  {
     
     @IBOutlet weak var totalLabel: UILabel!
     @IBOutlet weak var todayLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
    
     var objectArray = [String]()
-    
+    var searchController = UISearchController()
+    var arrayfilter = [String]()
     func details()
     {
     var i = 0
@@ -47,10 +51,75 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     totalLabel.text = String(id.count)
     todayLabel.text = String(i)
     }
-    
+    func filterResult(searchText: String)
+    {
+       filterEmp.removeAll()
+        for (k,v) in emp
+        {
+            arrayfilter = v
+            
+            let searchPredicate = NSPredicate(format: "SELF CONTAINS[c] %@", searchText)
+            let array = (self.arrayfilter as NSArray).filtered(using: searchPredicate)
+            var values = array as! [String]
+            if values .isEmpty
+            {
+                print("no match")
+            }
+            else
+            {
+                    filterid.append(k)
+            }
+            
+        }
+        var mySet = Set<Int>(filterid)
+        filterid = Array(mySet)
+        
+        print("dfdf")
+        print(filterEmp)
+        id.removeAll()
+        image.removeAll()
+        for i in filterid
+        {
+            for (k,v) in emp
+            {
+                if i == k
+                {
+                    let arr = v
+                    filterEmp[k] = [arr[0],arr[1],arr[2],arr[3],arr[4]]
+                    id.append(k)
+                    getProfile()
+                }
+            }
+        }
+        tableView.reloadData()
+    }
+    func filterSearchBy()
+    {
+        var mySet = Set<Int>(filterid)
+        filterid = Array(mySet)
+        filterEmp.removeAll()
+        print(filterEmp)
+        id.removeAll()
+        image.removeAll()
+        for i in filterid
+        {
+            for (k,v) in emp
+            {
+                if i == k
+                {
+                    let arr = v
+                    filterEmp[k] = [arr[0],arr[1],arr[2],arr[3],arr[4]]
+                    id.append(k)
+                    getProfile()
+                }
+            }
+        }
+        print(filterEmp)
+        tableView.reloadData()
+    }
     @IBAction func sort(_ sender: Any) {
     
-    
+   
     let method = UIAlertController(title: "SORT", message: "by", preferredStyle: .actionSheet)
     
     let names = UIAlertAction(title: "Name", style: UIAlertActionStyle.default) {
@@ -183,13 +252,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 {
                     print("no result")
                 }
-                
             }
             catch
             {
                 //error
             }
-            
             
         }
         
@@ -203,8 +270,20 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CustomTableViewCell
-
-        if sortSelected == 1
+        if searchController.isEditing
+        {
+            filterSearchBy()
+            let object = Array(filterEmp.values)[indexPath.row]
+            cell.nameLabel.text = object[0]
+            cell.profileImage.image = image[indexPath.row]
+            cell.genderLabel.text = object[3]
+            cell.dobLabel.text = object[2]
+            cell.dojLabel.text = object[4]
+            cell.idLabel.text = String(id[indexPath.row])
+            return (cell)
+        }
+        
+        else if sortSelected == 1
         {
             name.removeAll()
             dob.removeAll()
@@ -256,8 +335,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         return (cell)
         }
-        
-     else { preconditionFailure ("unexpected cell type") }
+      
+        else { preconditionFailure ("unexpected cell type")}
     }
     
     
@@ -324,7 +403,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         dob.removeAll()
         id.removeAll()
         emp.removeAll()
-        print("load")
         do
         {
             let results = try context.fetch(request)
@@ -373,7 +451,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         {
             
         }
-      
+        searchController = UISearchController(searchResultsController: nil)
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = false
+        definesPresentationContext = true
+        tableView.tableHeaderView = searchController.searchBar
         details()
         
         
@@ -385,4 +467,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 
 
 }
-
+extension ViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        filterResult(searchText: searchController.searchBar.text!)
+    }
+}

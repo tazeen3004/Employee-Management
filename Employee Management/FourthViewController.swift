@@ -11,12 +11,13 @@ import CoreData
 
 class FourthViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
-    var gender = ["Male","Female","Other"]
+    var gender = ["Choose","Male","Female","Other"]
     var pickerView = UIPickerView()
     let image = UIImagePickerController()
     let dobPicker = UIDatePicker()
     var passedValue: Int!
     var id: Int = 0
+    var doneValue = String()
     
     @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var nameField: UITextField!
@@ -96,6 +97,27 @@ class FourthViewController: UIViewController, UIPickerViewDelegate, UIPickerView
         
     }
     //picker view for gender
+    func genderPicker()
+    {
+        
+        
+        let done = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(donePressedPicker))
+        let toolbar = UIToolbar()
+        
+        
+        toolbar.sizeToFit()
+        toolbar.setItems([done], animated: false)
+        gendField.inputAccessoryView = toolbar
+        gendField.inputView = dobPicker
+    }
+    func donePressedPicker()
+    {
+        let pick = doneValue
+        gendField.text = pick
+        self.view.endEditing(true)
+        
+        
+    }
     func numberOfComponents(in pickerView: UIPickerView) -> Int
     {
         return 1
@@ -107,6 +129,7 @@ class FourthViewController: UIViewController, UIPickerViewDelegate, UIPickerView
     }
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int)
     {
+        doneValue = gender[row]
         gendField.text=gender[row]
     }
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String?

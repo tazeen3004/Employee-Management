@@ -9,7 +9,7 @@ import CoreData
 
 class SecondViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     
-    var gender = ["Male","Female","Other"]
+    var gender = ["Choose","Male","Female","Other"]
     var pickerView = UIPickerView()
     let image = UIImagePickerController()
     let dobPicker = UIDatePicker()

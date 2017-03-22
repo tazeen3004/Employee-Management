@@ -106,9 +106,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
 
     //on click it displays a list in actionsheet where user can choose the method by which he wants to sort the employees
-    @IBAction func sort(_ sender: Any) {
-    
-   
+    @IBAction func sort(_ sender: Any)
+    {
     let method = UIAlertController(title: "SORT", message: "by", preferredStyle: .actionSheet)
     
     let names = UIAlertAction(title: "Name", style: UIAlertActionStyle.default) {
@@ -264,7 +263,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CustomTableViewCell
-        if searchController.isEditing
+        if (searchController.isActive && searchController.searchBar.text != " ")
         {
             let object = Array(filterEmp.values)[indexPath.row]
             cell.nameLabel.text = object[0]
@@ -368,15 +367,32 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let indexPath = tableView.indexPathForSelectedRow;
         let currentCell = tableView.cellForRow(at: indexPath!) as! CustomTableViewCell!;
+        var value = 0
+        if searchController.isActive && searchController.searchBar.text != ""
+        {
+        value = filterid[(indexPath?.row)!]
+            searchController.isActive = false
+        }
+        else
+        {
+         value = Int((currentCell?.idLabel.text)!)!
+        }
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let viewController = storyboard.instantiateViewController(withIdentifier: "ThirdViewController") as! ThirdViewController
-        let value = Int((currentCell?.idLabel.text)!)
+        
         viewController.passedValue =  value
         self.present(viewController, animated: true , completion: nil)
     }
   
        override func viewDidLoad() {
         super.viewDidLoad()
+        self.searchController.loadViewIfNeeded()
+        searchController = UISearchController(searchResultsController: nil)
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = false
+        definesPresentationContext = true
+        tableView.tableHeaderView = searchController.searchBar
+        details()
         let appdelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appdelegate.persistentContainer.viewContext
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Employee")
@@ -436,17 +452,23 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         catch
         {
-            
+            let myAlert = UIAlertController(title: "Alert", message: "Unexpectd error, try again later!", preferredStyle: UIAlertControllerStyle.alert)
+            let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default)
+            myAlert.addAction(okAction)
+            self.present(myAlert, animated: true, completion: nil)
         }
-        searchController = UISearchController(searchResultsController: nil)
-        searchController.searchResultsUpdater = self
-        searchController.dimsBackgroundDuringPresentation = false
-        definesPresentationContext = true
-        tableView.tableHeaderView = searchController.searchBar
-        details()
+        
         
         
     }
+    override func viewDidAppear(_ animated: Bool)
+    {
+        if searchController.isActive == true {
+            
+            searchController.isActive = false
+            
+        }    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

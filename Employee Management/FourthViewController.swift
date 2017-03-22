@@ -73,7 +73,8 @@ class FourthViewController: UIViewController, UIPickerViewDelegate, UIPickerView
             self.dismiss(animated: true, completion: nil)
         }
     }
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController)
+    {
         self.dismiss(animated: true, completion: nil)
     }
     func birthDatePicker()
@@ -288,8 +289,17 @@ class FourthViewController: UIViewController, UIPickerViewDelegate, UIPickerView
         gendField.layer.addSublayer(border6)
         gendField.layer.masksToBounds = true
        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(FourthViewController.tapFunction))
+        idLabel.isUserInteractionEnabled = true
+        idLabel.addGestureRecognizer(tap)
     }
-
+    
+    func tapFunction(sender:UITapGestureRecognizer) {
+        print("tap working")
+        
+        let mg = idLabel.text!
+        print(mg)
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

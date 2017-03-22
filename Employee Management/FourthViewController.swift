@@ -56,14 +56,10 @@ class FourthViewController: UIViewController, UIPickerViewDelegate, UIPickerView
             UIAlertAction in
             print ("Cancel Pressed")
         }
-        
         method.addAction(gallery)
         method.addAction(camera)
         method.addAction(cancel)
-        
         present(method, animated: true, completion: nil)
-        
-    
     }
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let image = info[UIImagePickerControllerOriginalImage] as? UIImage
@@ -288,18 +284,9 @@ class FourthViewController: UIViewController, UIPickerViewDelegate, UIPickerView
         border6.borderWidth = width6
         gendField.layer.addSublayer(border6)
         gendField.layer.masksToBounds = true
-       
-        let tap = UITapGestureRecognizer(target: self, action: #selector(FourthViewController.tapFunction))
-        idLabel.isUserInteractionEnabled = true
-        idLabel.addGestureRecognizer(tap)
+     
     }
     
-    func tapFunction(sender:UITapGestureRecognizer) {
-        print("tap working")
-        
-        let mg = idLabel.text!
-        print(mg)
-    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
